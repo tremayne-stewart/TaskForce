@@ -7,14 +7,13 @@ class Node
 		$this->data=array
 					(
 						"index"=>-1,
-						"label"=>"testLabwl",
+						"label"=>"",
 						"children"=>array(),
 						"parent"=>-1,
 						"completed"=>false,
 						"prerequisites"=>array(),
-						"date"=>NULL,
+						"deadline"=>NULL,
 						"notes"=>array()
-						
 					);
 	}
 	function set($field,$value)
@@ -29,6 +28,15 @@ class Node
 	function get($field)
 	{
 		return $this->data[$field];
+	}
+	
+	public static function queryToNode(&$array) 
+	{
+		$ret = new Node();
+		foreach (array_keys($ret->data) as $key) 
+			//if(strlen($array[$key])>2)
+				$ret->set($key,$array[$key]);
+		return $ret;
 	}
 }
 ?>
