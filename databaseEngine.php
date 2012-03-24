@@ -41,9 +41,19 @@ class DatabaseEngine
 		$q="INSERT INTO `".$table."` (`";
 		$q.=implode("`, `",array_keys($array));
 		$q.="`) VALUES (";
-		$q.=implode(",",array_values($array));
+		
+		for($y =0;$y<sizeof(array_values($array));$y++)
+		{
+			$cur = array_values($array);
+			$cur=$cur[$y];
+			if(is_array($cur))
+				$fixedArray[]="'".serialize($cur)."'";
+			else
+				$fixedArray[]=$cur;
+		}
+		$q.=implode(",",$fixedArray);
 		$q.=");";
-		echo $q;
+		mysql_query($q);
 	}
 	
 	/*
@@ -59,7 +69,6 @@ class DatabaseEngine
 		$q="SELECT * From ".$table;
 		if(strlen($field)>0)
 			$q.=" WHERE `".$field."`='".$value."'";
-		echo $q;
 		return mysql_query($q);
 	}
 }

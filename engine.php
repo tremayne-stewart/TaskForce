@@ -7,23 +7,26 @@ class Engine
 	{
 		$this->de=new DatabaseEngine("localhost","root","kingdom","TaskForce");
 	}
+	//$request[0] = control
+    //$request[1] = index
 	function get(&$request)
 	{
-		//$request[0] = control
-		//$request[1] = index
+		
+		
 		if($request[0]=="list")
 		{
 			if($request[1]=="all")
-			{
-				
-			}
+				return queryToNodes("Nodes");
 			else if(is_numeric($request[1]))
-			{
+				return $this->queryToNodes("Nodes","index","1");
 				
-			}
+			
+			
 		}
 		else if($request[0]=="node");
-		else if($request[0]=="note");
+			
+		else if($request[0]=="note")
+			return queryToNodes("Notes","index",$request[1]);
 	}
 	
 	
@@ -37,10 +40,16 @@ class Engine
 	*/
 	function queryToNodes($table,$field="",$value="")
 	{
-		$result=$this->de->getRows($table);
+		$result=$this->de->getRows($table,$field,$value);
 		while($row = mysql_fetch_array($result))
-			$ret[]=Node::queryToNode($row);					
+		{
+			
+			$ret[]=Node::arrayToNode($row);				
+		}	
+		
 		return $ret;
 	}
 }
+
+
 ?>
